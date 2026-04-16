@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Equidad – Panel Empresa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <style>
+    body { background: var(--navy); min-height: 100vh; }
+
+    .dash-hero {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      padding: 52px 24px 48px;
+      text-align: center;
+    }
+    .dash-hero h1 { font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; color: #fff; margin: 0 0 6px; }
+    .dash-hero p  { color: rgba(255,255,255,.75); margin: 0 0 40px; font-size: .95rem; }
+
+    .action-cards {
+      display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+    }
+    .action-card {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 16px; padding: 28px 24px;
+      width: 220px; text-align: center;
+      text-decoration: none;
+      transition: transform .2s, background .2s, border-color .2s;
+      backdrop-filter: blur(10px);
+    }
+    .action-card:hover { transform: translateY(-4px); background: rgba(255,255,255,.18); border-color: var(--cyan); }
+    .action-card .ac-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; font-size: 1.4rem;
+    }
+    .ac-icon.cyan   { background: rgba(0,200,212,.2);  color: var(--cyan); }
+    .ac-icon.purple { background: rgba(108,63,197,.2); color: #a77cff; }
+    .action-card h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.05rem; color: #fff; margin: 0 0 6px; }
+    .action-card p  { font-size: .8rem; color: rgba(255,255,255,.6); margin: 0; line-height: 1.4; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+    <ul class="nav-links">
+      <li><span style="color:rgba(255,255,255,.7);font-size:.9rem">
+        <i class="fas fa-building" style="color:var(--cyan);margin-right:6px"></i>
+        <span id="nombre-empresa">...</span>
+      </span></li>
+      <li><button class="btn-nav" onclick="logout()" style="cursor:pointer;border:none;background:transparent;padding:0">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button></li>
+    </ul>
+  </nav>
+
+  <div class="dash-hero">
+    <h1>Panel de <span id="nombre-hero">...</span></h1>
+    <p>¿Qué quieres hacer hoy?</p>
+
+    <div class="action-cards">
+      <a href="publicar-vacante.html" class="action-card">
+        <div class="ac-icon cyan"><i class="fas fa-plus-circle"></i></div>
+        <h3>Publicar Vacante</h3>
+        <p>Crea una nueva oferta de empleo</p>
+      </a>
+      <a href="mis-vacantes.html" class="action-card">
+        <div class="ac-icon purple"><i class="fas fa-list-alt"></i></div>
+        <h3>Mis Vacantes</h3>
+        <p>Gestiona tus ofertas y ve quién se postula</p>
+      </a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-info-circle" id="toast-icon"></i>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script type="module">
+    import { requireAuth, cargarUsuario, logout } from './js/core/auth-guard.js';
+    requireAuth();
+    async function init() {
+      const u = await cargarUsuario();
+      if (!u) return;
+      document.getElementById('nombre-empresa').textContent = u.nombre;
+      document.getElementById('nombre-hero').textContent    = u.nombre;
+    }
+    window.logout = logout;
+    init();
+  </script>
+</body>
+</html>

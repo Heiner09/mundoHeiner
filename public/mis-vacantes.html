@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Equidad – Mis Vacantes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <style>
+    body { background: var(--navy); min-height: 100vh; }
+
+    .page-header {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      padding: 40px 24px; text-align: center;
+    }
+    .page-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: #fff; margin: 0 0 6px; }
+    .page-header p  { color: rgba(255,255,255,.75); margin: 0; font-size: .95rem; }
+
+    .lista-container { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.6); font-size: .9rem; text-decoration: none;
+      margin-bottom: 24px; transition: color .2s;
+    }
+    .back-link:hover { color: var(--cyan); }
+
+    .vacante-item {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: 22px 24px; margin-bottom: 16px;
+      transition: border-color .2s;
+    }
+    .vacante-item:hover { border-color: rgba(0,200,212,.4); }
+
+    .vacante-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .vacante-info h4 { margin: 0 0 4px; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; color: #fff; }
+    .vacante-info span { font-size: .84rem; color: rgba(255,255,255,.5); }
+    .vacante-estado {
+      font-size: .75rem; font-weight: 600; padding: 4px 12px;
+      border-radius: 20px; white-space: nowrap;
+    }
+    .vacante-estado.activa   { background: rgba(0,200,100,.15); color: #00c864; border: 1px solid #00c864; }
+    .vacante-estado.inactiva { background: rgba(255,80,80,.1);  color: #ff5050; border: 1px solid #ff5050; }
+
+    .btn-ver-postulantes {
+      margin-top: 14px; padding: 8px 18px;
+      background: rgba(0,200,212,.1); border: 1px solid var(--cyan); color: var(--cyan);
+      border-radius: 8px; font-size: .85rem; cursor: pointer; transition: background .2s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-ver-postulantes:hover { background: rgba(0,200,212,.2); }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.72); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #0f1e45; border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px; padding: 32px; width: 100%; max-width: 560px;
+      max-height: 80vh; display: flex; flex-direction: column;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; color: #fff; margin: 0; }
+    .modal-close { background: none; border: none; color: rgba(255,255,255,.5); font-size: 1.2rem; cursor: pointer; }
+    .modal-close:hover { color: #fff; }
+    .modal-body { overflow-y: auto; flex: 1; }
+
+    .postulante-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: 18px; margin-bottom: 12px;
+    }
+    .postulante-nombre { font-family: 'Rajdhani', sans-serif; font-size: 1rem; color: #fff; margin: 0 0 6px; }
+    .postulante-dato   { font-size: .83rem; color: rgba(255,255,255,.55); margin: 3px 0; display: flex; align-items: center; gap: 7px; }
+    .postulante-dato i { color: var(--cyan); width: 14px; }
+    .postulante-perfil { font-size: .85rem; color: rgba(255,255,255,.4); margin: 10px 0 0; font-style: italic; line-height: 1.5; }
+    .postulante-fecha  { font-size: .75rem; color: rgba(255,255,255,.28); margin-top: 10px; }
+
+    .loading-text, .empty-text { color: rgba(255,255,255,.4); font-size: .9rem; padding: 40px 0; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+    <ul class="nav-links">
+      <li><button class="btn-nav" onclick="logout()" style="cursor:pointer;border:none;background:transparent;padding:0">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1><i class="fas fa-list-alt" style="margin-right:10px"></i>Mis Vacantes</h1>
+    <p>Gestiona tus ofertas de empleo y revisa los postulantes</p>
+  </div>
+
+  <div class="lista-container">
+    <a href="dashboard-empresa.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Volver al dashboard
+    </a>
+
+    <div id="lista-vacantes">
+      <p class="loading-text">Cargando vacantes...</p>
+    </div>
+  </div>
+
+  <!-- Modal postulantes -->
+  <div class="modal-overlay" id="modal-postulantes">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-titulo">Postulantes</h3>
+        <button class="modal-close" onclick="cerrarModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <p class="loading-text">Cargando...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-info-circle" id="toast-icon"></i>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script type="module">
+    import { requireAuth, logout } from './js/core/auth-guard.js';
+    import { api }       from './js/core/api.js';
+    import { showToast } from './js/components/toast.js';
+
+    requireAuth();
+
+    const MODALIDAD = { presencial: 'Presencial', remoto: 'Remoto', hibrido: 'Híbrido' };
+
+    async function init() {
+      const lista = document.getElementById('lista-vacantes');
+      try {
+        const data = await api.get('/empleos/mis-empleos');
+        if (!data.empleos.length) {
+          lista.innerHTML = `
+            <p class="empty-text">Aún no has publicado ninguna vacante.<br>
+            <a href="publicar-vacante.html" style="color:var(--cyan);text-decoration:none;margin-top:8px;display:inline-block">
+              <i class="fas fa-plus-circle"></i> Publicar primera vacante
+            </a></p>`;
+          return;
+        }
+        lista.innerHTML = data.empleos.map(e => `
+          <div class="vacante-item">
+            <div class="vacante-row">
+              <div class="vacante-info">
+                <h4>${e.titulo}</h4>
+                <span>${e.ubicacion} · ${MODALIDAD[e.modalidad] || e.modalidad} · ${e.salario}</span>
+              </div>
+              <span class="vacante-estado ${e.activo ? 'activa' : 'inactiva'}">${e.activo ? 'Activa' : 'Inactiva'}</span>
+            </div>
+            <button class="btn-ver-postulantes" onclick="verPostulantes('${e._id}', '${e.titulo.replace(/'/g, "\\'")}')">
+              <i class="fas fa-users"></i> Ver postulantes
+            </button>
+          </div>
+        `).join('');
+      } catch (err) {
+        lista.innerHTML = '<p class="empty-text">Error al cargar las vacantes.</p>';
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function verPostulantes(empleoId, titulo) {
+      document.getElementById('modal-titulo').textContent = `Postulantes — ${titulo}`;
+      document.getElementById('modal-body').innerHTML = '<p class="loading-text">Cargando...</p>';
+      document.getElementById('modal-postulantes').classList.add('open');
+
+      try {
+        const data = await api.get(`/postulaciones/empleo/${empleoId}`);
+        const body = document.getElementById('modal-body');
+
+        if (!data.postulaciones.length) {
+          body.innerHTML = '<p class="empty-text">Nadie se ha postulado aún a esta vacante.</p>';
+          return;
+        }
+
+        body.innerHTML = data.postulaciones.map(p => {
+          const u     = p.persona;
+          const fecha = new Date(p.creadoEn).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+          return `
+            <div class="postulante-card">
+              <p class="postulante-nombre">${u.nombre}</p>
+              <p class="postulante-dato"><i class="fas fa-envelope"></i> ${u.email}</p>
+              ${u.telefono ? `<p class="postulante-dato"><i class="fas fa-phone"></i> ${u.telefono}</p>` : ''}
+              ${u.ciudad   ? `<p class="postulante-dato"><i class="fas fa-map-marker-alt"></i> ${u.ciudad}</p>` : ''}
+              ${u.perfil   ? `<p class="postulante-perfil">"${u.perfil}"</p>` : ''}
+              <p class="postulante-fecha">Postulado el ${fecha}</p>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        document.getElementById('modal-body').innerHTML = '<p class="empty-text">Error al cargar postulantes.</p>';
+      }
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-postulantes').classList.remove('open');
+    }
+
+    document.getElementById('modal-postulantes').addEventListener('click', e => {
+      if (e.target === e.currentTarget) cerrarModal();
+    });
+
+    window.verPostulantes = verPostulantes;
+    window.cerrarModal    = cerrarModal;
+    window.logout         = logout;
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Equidad – Cursos Gratuitos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <style>
+    body { background: var(--navy); min-height: 100vh; }
+
+    .page-header {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      padding: 40px 24px; text-align: center;
+    }
+    .page-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: #fff; margin: 0 0 6px; }
+    .page-header p  { color: rgba(255,255,255,.75); margin: 0; font-size: .95rem; }
+
+    .cursos-container { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.6); font-size: .9rem; text-decoration: none;
+      margin-bottom: 28px; transition: color .2s;
+    }
+    .back-link:hover { color: var(--cyan); }
+
+    /* Filtro por categoría */
+    .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+    .filtro-btn {
+      padding: 7px 18px; border-radius: 20px; border: 1px solid rgba(255,255,255,.2);
+      background: transparent; color: rgba(255,255,255,.6); font-size: .85rem;
+      cursor: pointer; transition: all .2s; font-family: 'Exo 2', sans-serif;
+    }
+    .filtro-btn:hover, .filtro-btn.active {
+      background: rgba(0,200,212,.15); border-color: var(--cyan); color: var(--cyan);
+    }
+
+    /* Grid */
+    .cursos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .curso-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: 24px; display: flex; flex-direction: column;
+      transition: transform .2s, border-color .2s;
+    }
+    .curso-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+
+    .curso-plataforma {
+      font-size: .75rem; font-weight: 700; letter-spacing: .8px;
+      padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 14px; width: fit-content;
+    }
+    .plat-sena     { background: rgba(0,150,255,.15); color: #4db6ff; border: 1px solid #4db6ff; }
+    .plat-google   { background: rgba(234,67,53,.15);  color: #ff7b6f; border: 1px solid #ff7b6f; }
+    .plat-coursera { background: rgba(0,86,179,.2);    color: #6fa3ff; border: 1px solid #6fa3ff; }
+    .plat-microsoft{ background: rgba(0,120,212,.15);  color: #5eb3ff; border: 1px solid #5eb3ff; }
+    .plat-meta     { background: rgba(24,119,242,.15); color: #7ab4ff; border: 1px solid #7ab4ff; }
+    .plat-hubspot  { background: rgba(255,122,0,.15);  color: #ffaa5c; border: 1px solid #ffaa5c; }
+
+    .curso-titulo { font-family: 'Rajdhani', sans-serif; font-size: 1.05rem; color: #fff; margin: 0 0 8px; }
+    .curso-desc   { font-size: .85rem; color: rgba(255,255,255,.5); margin: 0 0 16px; line-height: 1.5; flex: 1; }
+    .curso-meta   { display: flex; gap: 14px; margin-bottom: 16px; }
+    .curso-meta span { font-size: .8rem; color: rgba(255,255,255,.45); display: flex; align-items: center; gap: 5px; }
+    .curso-meta i { color: var(--cyan); }
+
+    .btn-curso {
+      display: block; text-align: center; padding: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #fff; text-decoration: none; border-radius: 8px;
+      font-family: 'Rajdhani', sans-serif; font-size: .95rem; font-weight: 600;
+      transition: opacity .2s;
+    }
+    .btn-curso:hover { opacity: .85; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+    <ul class="nav-links">
+      <li><button class="btn-nav" onclick="logout()" style="cursor:pointer;border:none;background:transparent;padding:0">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1><i class="fas fa-graduation-cap" style="margin-right:10px"></i>Cursos Gratuitos</h1>
+    <p>Capacítate con los mejores recursos en línea sin costo</p>
+  </div>
+
+  <div class="cursos-container">
+    <a href="dashboard-persona.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Volver al dashboard
+    </a>
+
+    <div class="filtros">
+      <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
+      <button class="filtro-btn" onclick="filtrar('tecnologia', this)">Tecnología</button>
+      <button class="filtro-btn" onclick="filtrar('negocios', this)">Negocios</button>
+      <button class="filtro-btn" onclick="filtrar('oficios', this)">Oficios</button>
+      <button class="filtro-btn" onclick="filtrar('ingles', this)">Inglés</button>
+    </div>
+
+    <div class="cursos-grid" id="cursos-grid"></div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-info-circle" id="toast-icon"></i>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script type="module">
+    import { requireAuth, logout } from './js/core/auth-guard.js';
+    requireAuth();
+
+    const CURSOS = [
+      { titulo: 'Excel para el trabajo', plataforma: 'SENA', plat_clase: 'plat-sena', desc: 'Manejo de hojas de cálculo, fórmulas y tablas dinámicas para el entorno laboral.', duracion: '40h', categoria: 'tecnologia', url: 'https://oferta.senasofiaplus.edu.co' },
+      { titulo: 'Fundamentos de programación', plataforma: 'SENA', plat_clase: 'plat-sena', desc: 'Introducción a la lógica de programación y algoritmos básicos.', duracion: '48h', categoria: 'tecnologia', url: 'https://oferta.senasofiaplus.edu.co' },
+      { titulo: 'Contabilidad básica', plataforma: 'SENA', plat_clase: 'plat-sena', desc: 'Principios contables, registro de operaciones y estados financieros.', duracion: '80h', categoria: 'negocios', url: 'https://oferta.senasofiaplus.edu.co' },
+      { titulo: 'Google Analytics', plataforma: 'Google', plat_clase: 'plat-google', desc: 'Aprende a medir el rendimiento digital y tomar decisiones basadas en datos.', duracion: '6h', categoria: 'negocios', url: 'https://skillshop.withgoogle.com' },
+      { titulo: 'Marketing Digital', plataforma: 'Google', plat_clase: 'plat-google', desc: 'Fundamentos del marketing digital: SEO, SEM, redes sociales y email marketing.', duracion: '40h', categoria: 'negocios', url: 'https://learndigital.withgoogle.com/activate' },
+      { titulo: 'Python para todos', plataforma: 'Coursera', plat_clase: 'plat-coursera', desc: 'Introducción a Python con ejercicios prácticos. Certificado gratuito al auditar.', duracion: '20h', categoria: 'tecnologia', url: 'https://www.coursera.org/specializations/python' },
+      { titulo: 'Fundamentos de IA', plataforma: 'Microsoft', plat_clase: 'plat-microsoft', desc: 'Conceptos de inteligencia artificial, machine learning y sus aplicaciones.', duracion: '8h', categoria: 'tecnologia', url: 'https://learn.microsoft.com/es-es/training' },
+      { titulo: 'Introducción a SQL', plataforma: 'Microsoft', plat_clase: 'plat-microsoft', desc: 'Consultas y manejo de bases de datos relacionales desde cero.', duracion: '12h', categoria: 'tecnologia', url: 'https://learn.microsoft.com/es-es/training' },
+      { titulo: 'Marketing en redes sociales', plataforma: 'Meta', plat_clase: 'plat-meta', desc: 'Estrategias para Facebook, Instagram y WhatsApp Business orientadas a resultados.', duracion: '10h', categoria: 'negocios', url: 'https://www.facebook.com/business/learn' },
+      { titulo: 'Ventas Inbound', plataforma: 'HubSpot', plat_clase: 'plat-hubspot', desc: 'Metodología de ventas centrada en el cliente. Certificación gratuita reconocida.', duracion: '5h', categoria: 'negocios', url: 'https://academy.hubspot.com' },
+      { titulo: 'Electricidad residencial', plataforma: 'SENA', plat_clase: 'plat-sena', desc: 'Instalaciones eléctricas básicas, normas de seguridad y mantenimiento.', duracion: '96h', categoria: 'oficios', url: 'https://oferta.senasofiaplus.edu.co' },
+      { titulo: 'Plomería básica', plataforma: 'SENA', plat_clase: 'plat-sena', desc: 'Instalación y mantenimiento de tuberías, grifería y sistemas de agua.', duracion: '80h', categoria: 'oficios', url: 'https://oferta.senasofiaplus.edu.co' },
+      { titulo: 'Inglés A1–A2', plataforma: 'SENA', plat_clase: 'plat-sena', desc: 'Inglés básico para el entorno laboral: vocabulario, gramática y conversación.', duracion: '60h', categoria: 'ingles', url: 'https://oferta.senasofiaplus.edu.co' },
+      { titulo: 'Business English', plataforma: 'Coursera', plat_clase: 'plat-coursera', desc: 'Inglés para negocios: correos, presentaciones y reuniones profesionales.', duracion: '18h', categoria: 'ingles', url: 'https://www.coursera.org' },
+    ];
+
+    let categoriaActiva = 'todos';
+
+    function renderCursos(cat) {
+      const grid = document.getElementById('cursos-grid');
+      const lista = cat === 'todos' ? CURSOS : CURSOS.filter(c => c.categoria === cat);
+      grid.innerHTML = lista.map(c => `
+        <div class="curso-card">
+          <span class="curso-plataforma ${c.plat_clase}">${c.plataforma}</span>
+          <h3 class="curso-titulo">${c.titulo}</h3>
+          <p class="curso-desc">${c.desc}</p>
+          <div class="curso-meta">
+            <span><i class="fas fa-clock"></i> ${c.duracion}</span>
+            <span><i class="fas fa-tag"></i> Gratuito</span>
+          </div>
+          <a href="${c.url}" target="_blank" rel="noopener" class="btn-curso">
+            Ir al curso <i class="fas fa-external-link-alt" style="margin-left:6px;font-size:.8rem"></i>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    window.filtrar = (cat, btn) => {
+      categoriaActiva = cat;
+      document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCursos(cat);
+    };
+
+    window.logout = logout;
+    renderCursos('todos');
+  </script>
+</body>
+</html>

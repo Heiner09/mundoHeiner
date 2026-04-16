@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Equidad – Unidos por el Fin de la Pobreza</title>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Squada+One&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+  
+
+
+  
+    <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+    <ul class="nav-links">
+      <li><a href="#">Crea tu hoja de vida</a></li>
+      <li><a href="#">Consigue empleo</a></li>
+      <li><a href="login.html" class="btn-nav">Inicio sesión</a></li>
+    </ul>
+  </nav>
+<main class="home-page">
+  <!-- ===== HERO CAROUSEL ===== -->
+  <section class="hero" id="inicio">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- Slide 1 -->
+      <div class="carousel-slide">
+        <img src="images/image_1_2x.png" alt="Mundo Equidad hero 1"/>
+        <div class="slide-overlay"></div>
+        <div class="hero-content">
+          <span class="hero-tag">ODS-1 · Fin de la Pobreza</span>
+          <h1 class="hero-title">MUNDO <span class="accent">EQUIDAD:</span><br/>Unidos por el Fin<br/>de la Pobreza</h1>
+          <p class="hero-subtitle">Conectamos talento con oportunidades reales de empleo e inclusión social.</p>
+          <div class="hero-actions">
+            <a href="login.html" class="btn-primary">Comenzar ahora</a>
+            <a href="#servicios" class="btn-outline">Conoce más</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-slide">
+        <img src="images/Rectangle_22_2x.png" alt="Mundo Equidad hero 2"/>
+        <div class="slide-overlay"></div>
+        <div class="hero-content">
+          <span class="hero-tag">Bolsa de Empleo Social</span>
+          <h1 class="hero-title">Encuentra tu<br/><span class="accent">Oportunidad</span><br/>Laboral</h1>
+          <p class="hero-subtitle">Empresas y personas conectadas en un mismo ecosistema inclusivo.</p>
+          <div class="hero-actions">
+            <a href="login.html" class="btn-primary">Ver empleos</a>
+            <a href="#mision" class="btn-outline">Nuestra misión</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-slide">
+        <img src="images/pexels-ali.png" alt="Mundo Equidad hero 3"/>
+        <div class="slide-overlay"></div>
+        <div class="hero-content">
+          <span class="hero-tag">Constructor de CV</span>
+          <h1 class="hero-title">Crea tu<br/><span class="accent">Hoja de Vida</span><br/>Profesional</h1>
+          <p class="hero-subtitle">Guía paso a paso para generar tu CV sin barreras técnicas ni de formato.</p>
+          <div class="hero-actions">
+            <a href="login.html" class="btn-primary">Crear mi CV</a>
+            <a href="#servicios" class="btn-outline">Ver herramientas</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="carousel-btn prev" id="prevBtn" aria-label="Anterior">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="carousel-btn next" id="nextBtn" aria-label="Siguiente">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <div class="carousel-dots" id="carouselDots">
+      <div class="dot active" data-idx="0"></div>
+      <div class="dot" data-idx="1"></div>
+      <div class="dot" data-idx="2"></div>
+    </div>
+  </section>
+
+  <!-- ===== PILARES ===== -->
+  <section class="pillars">
+    <div class="pillars-inner">
+      <div class="pillar reveal">
+        <div class="pillar-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="pillar-dot"></div>
+        <h3>Formación Gratuita</h3>
+      </div>
+      <div class="pillar reveal" style="transition-delay:.15s">
+        <div class="pillar-icon"><i class="fas fa-id-badge"></i></div>
+        <div class="pillar-dot"></div>
+        <h3>Perfil Profesional</h3>
+      </div>
+      <div class="pillar reveal" style="transition-delay:.3s">
+        <div class="pillar-icon"><i class="fas fa-handshake"></i></div>
+        <div class="pillar-dot"></div>
+        <h3>Vinculación Laboral</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICIOS ===== -->
+  <section class="services" id="servicios">
+    <div style="max-width:1200px;margin:0 auto;">
+      <div class="section-header reveal">
+        <span class="label">Lo que ofrecemos</span>
+        <h2>Nuestras Herramientas</h2>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card reveal">
+          <span class="icon"><i class="fas fa-tools"></i></span>
+          <h4>Capacitación Técnica</h4>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay:.1s">
+          <span class="icon"><i class="fas fa-compass"></i></span>
+          <h4>Orientación Estratégica</h4>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay:.2s">
+          <span class="icon"><i class="fas fa-globe"></i></span>
+          <h4>Empleos Sociales</h4>
+        </div>
+
+        <!-- MONITOREO CENTER -->
+        <div class="service-monitor reveal" style="transition-delay:.3s">
+          <h4><i class="fas fa-chart-line" style="margin-right:6px"></i>Monitoreo</h4>
+          <ul>
+            <li>Cursos</li>
+            <li>Conexión con empresas</li>
+            <li>Organiza tu información académica</li>
+          </ul>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay:.4s">
+          <span class="icon"><i class="fas fa-briefcase"></i></span>
+          <h4>Bolsa Inclusiva</h4>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay:.5s">
+          <span class="icon"><i class="fas fa-file-alt"></i></span>
+          <h4>Constructor de CV</h4>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MISIÓN Y VISIÓN ===== -->
+  <section class="mv-section" id="mision">
+    <div class="mv-bg"></div>
+    <div class="mv-inner">
+
+      <div class="mv-block reveal">
+        <div class="mv-divider"></div>
+        <h2><span class="accent">Misión</span></h2>
+        <p>Nuestra misión es combatir la pobreza mediante una herramienta tecnológica gratuita que centralice el acceso a la educación y el empleo inclusivo. Buscamos eliminar las barreras de entrada al mercado laboral para sectores vulnerables, facilitando la creación de perfiles profesionales y conectando el talento sin experiencia con oportunidades reales de progreso económico.</p>
+      </div>
+
+      <div class="mv-block reveal" style="transition-delay:.2s">
+        <div class="mv-divider"></div>
+        <h2><span class="accent">Visión</span></h2>
+        <p>Ser la plataforma digital líder en la reducción de la desigualdad social, logrando un ecosistema donde cualquier persona, independientemente de su situación económica, tenga las herramientas necesarias para mejorar su perfil profesional. Aspiramos a transformar el mercado laboral en un espacio equitativo que impulse el desarrollo sostenible y el bienestar de las comunidades a nivel global.</p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+        <p>Plataforma digital gratuita para la vinculación laboral inclusiva y el desarrollo profesional de comunidades vulnerables.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Contáctanos</h5>
+        <ul>
+          <li><i class="fas fa-phone"></i> (+601) 3907013</li>
+          <li><i class="fas fa-envelope"></i> <a href="mailto:mundoequidad@gmail.com">mundoequidad@gmail.com</a></li>
+          <li><i class="fas fa-map-marker-alt"></i> Calle 97A No. 53 – 01</li>
+        </ul>
+        <div style="margin-top:18px">
+          <h5 style="margin-bottom:10px">Políticas</h5>
+          <ul>
+            <li><a href="#">Políticas de privacidad</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Herramientas</h5>
+        <ul>
+          <li><a href="#">Bolsa de Empleo Social</a></li>
+          <li><a href="#">Perfil Profesional</a></li>
+          <li><a href="#">Educación Técnica</a></li>
+          <li><a href="#">Oportunidades Sin Experiencia</a></li>
+          <li><a href="#">Desarrollo Sostenible</a></li>
+          <li><a href="#">Bienestar Comunitario</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Mundo Equidad. Todos los derechos reservados.</p>
+      <a href="#">Políticas de privacidad</a>
+    </div>
+  </footer>
+
+  <!-- Floating buttons -->
+  <a href="#inicio" class="back-top" id="backTop" aria-label="Volver arriba">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+  <a href="login.html" class="fab" aria-label="Iniciar sesión">
+    <i class="fas fa-user"></i>
+  </a>
+
+  <!-- ===== JS ===== -->
+  <script type="module" src="js/pages/home.js"></script>
+
+</body>
+</html>

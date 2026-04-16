@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Equidad – Hoja de Vida</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <style>
+    /* ── Layout general ── */
+    body { background: var(--navy); min-height: 100vh; }
+
+    .page-header {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      padding: 40px 24px; text-align: center;
+    }
+    .page-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: #fff; margin: 0 0 6px; }
+    .page-header p  { color: rgba(255,255,255,.75); margin: 0; font-size: .95rem; }
+
+    .form-container { max-width: 780px; margin: 40px auto 60px; padding: 0 24px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.6); font-size: .9rem; text-decoration: none;
+      margin-bottom: 28px; transition: color .2s;
+    }
+    .back-link:hover { color: var(--cyan); }
+
+    /* ── Tarjeta sección ── */
+    .section-card {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px; padding: 32px; margin-bottom: 24px; backdrop-filter: blur(10px);
+    }
+    .section-card h2 {
+      font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; color: var(--cyan);
+      margin: 0 0 22px; display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px; border-bottom: 1px solid rgba(0,200,212,.2);
+    }
+
+    /* ── Campos ── */
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; color: rgba(255,255,255,.65); font-size: .84rem; margin-bottom: 6px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 11px 14px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15);
+      border-radius: 9px; color: #fff; font-family: 'Exo 2', sans-serif; font-size: .9rem;
+      outline: none; transition: border-color .2s; box-sizing: border-box;
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.28); }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--cyan); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) {
+      .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Fecha nacimiento ── */
+    .fecha-wrap { display: grid; grid-template-columns: 80px 120px 100px; gap: 10px; }
+    @media (max-width: 600px) { .fecha-wrap { grid-template-columns: 1fr 1fr 1fr; } }
+    .fecha-wrap select option { background: #0b1535; }
+
+    /* ── Educación ── */
+    .edu-entry {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: 18px; margin-bottom: 14px; position: relative;
+    }
+    .edu-entry .form-row-2 { margin-bottom: 12px; }
+    .btn-remove-edu {
+      position: absolute; top: 12px; right: 14px;
+      background: rgba(255,80,80,.15); border: 1px solid rgba(255,80,80,.4);
+      color: #ff7070; border-radius: 6px; padding: 4px 9px; cursor: pointer;
+      font-size: .8rem; transition: background .2s;
+    }
+    .btn-remove-edu:hover { background: rgba(255,80,80,.3); }
+
+    /* Subir certificado */
+    .cert-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .cert-label {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 14px; border-radius: 8px;
+      border: 1px dashed rgba(255,255,255,.25); color: rgba(255,255,255,.55);
+      font-size: .84rem; cursor: pointer; transition: border-color .2s, color .2s;
+    }
+    .cert-label:hover  { border-color: var(--cyan); color: var(--cyan); }
+    .cert-label.loaded { border-color: #00c864; color: #00c864; border-style: solid; }
+    .cert-label input[type="file"] { display: none; }
+    .cert-link {
+      color: var(--cyan); font-size: .82rem; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .cert-link:hover { text-decoration: underline; }
+
+    /* Botón agregar entrada */
+    .btn-add {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 4px; padding: 9px 18px;
+      background: rgba(0,200,212,.1); border: 1px solid var(--cyan); color: var(--cyan);
+      border-radius: 8px; font-size: .88rem; cursor: pointer; transition: background .2s;
+    }
+    .btn-add:hover { background: rgba(0,200,212,.2); }
+
+    /* ── Referencias ── */
+    .ref-entry {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: 18px; margin-bottom: 14px; position: relative;
+    }
+    .ref-num {
+      font-family: 'Rajdhani', sans-serif; font-size: .9rem;
+      color: rgba(255,255,255,.5); margin-bottom: 12px;
+    }
+    .btn-remove-ref {
+      position: absolute; top: 12px; right: 14px;
+      background: rgba(255,80,80,.15); border: 1px solid rgba(255,80,80,.4);
+      color: #ff7070; border-radius: 6px; padding: 4px 9px; cursor: pointer;
+      font-size: .8rem; transition: background .2s;
+    }
+    .btn-remove-ref:hover { background: rgba(255,80,80,.3); }
+
+    /* ── Botones de acción ── */
+    .action-bar { display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; }
+    .btn-guardar {
+      flex: 1; min-width: 180px; padding: 13px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #fff; border: none; border-radius: 10px;
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
+      letter-spacing: .5px; cursor: pointer; transition: opacity .2s;
+    }
+    .btn-guardar:hover    { opacity: .85; }
+    .btn-guardar:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-pdf {
+      flex: 1; min-width: 180px; padding: 13px;
+      background: rgba(0,200,212,.1); border: 1px solid var(--cyan); color: var(--cyan);
+      border-radius: 10px; font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
+      letter-spacing: .5px; cursor: pointer; transition: background .2s;
+    }
+    .btn-pdf:hover { background: rgba(0,200,212,.2); }
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+    <ul class="nav-links">
+      <li><button class="btn-nav" onclick="logout()" style="cursor:pointer;border:none;background:transparent;padding:0">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1><i class="fas fa-id-card" style="margin-right:10px"></i>Mi Hoja de Vida</h1>
+    <p>Completa tu perfil profesional y expórtalo en formato Harvard</p>
+  </div>
+
+  <div class="form-container">
+    <a href="dashboard-persona.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Volver al dashboard
+    </a>
+
+    <form id="form-hv" novalidate>
+
+      <!-- ── DATOS PERSONALES ── -->
+      <div class="section-card">
+        <h2><i class="fas fa-user"></i> Datos Personales</h2>
+
+        <div class="form-group">
+          <label>Nombre completo *</label>
+          <input type="text" id="dp-nombre" placeholder="Ej: Ana María Torres Gómez"/>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Cédula de ciudadanía *</label>
+            <input type="text" id="dp-cedula" placeholder="Ej: 1020304050"/>
+          </div>
+          <div class="form-group">
+            <label>Fecha de nacimiento</label>
+            <div class="fecha-wrap">
+              <select id="dp-dia"><option value="">Día</option></select>
+              <select id="dp-mes">
+                <option value="">Mes</option>
+                <option value="Enero">Enero</option><option value="Febrero">Febrero</option>
+                <option value="Marzo">Marzo</option><option value="Abril">Abril</option>
+                <option value="Mayo">Mayo</option><option value="Junio">Junio</option>
+                <option value="Julio">Julio</option><option value="Agosto">Agosto</option>
+                <option value="Septiembre">Septiembre</option><option value="Octubre">Octubre</option>
+                <option value="Noviembre">Noviembre</option><option value="Diciembre">Diciembre</option>
+              </select>
+              <select id="dp-anio"><option value="">Año</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Ciudad de residencia</label>
+            <input type="text" id="dp-ciudad" placeholder="Ej: Bogotá, Colombia"/>
+          </div>
+          <div class="form-group">
+            <label>Número de contacto</label>
+            <input type="text" id="dp-telefono" placeholder="Ej: 310 456 7890"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Dirección de residencia</label>
+          <input type="text" id="dp-direccion" placeholder="Ej: Calle 45 # 23 – 10, Barrio Los Pinos"/>
+        </div>
+      </div>
+
+      <!-- ── PERFIL LABORAL ── -->
+      <div class="section-card">
+        <h2><i class="fas fa-briefcase"></i> Perfil Laboral</h2>
+        <div class="form-group">
+          <label>Menciona brevemente las habilidades que te caracterizan en tu vida laboral</label>
+          <textarea id="pl-perfil" placeholder="Ej: Profesional con experiencia en atención al cliente, manejo de herramientas ofimáticas y trabajo en equipo. Me destaco por mi proactividad, puntualidad y capacidad de adaptación en entornos dinámicos..."></textarea>
+        </div>
+      </div>
+
+      <!-- ── EDUCACIÓN ── -->
+      <div class="section-card">
+        <h2><i class="fas fa-graduation-cap"></i> Educación</h2>
+        <div id="educacion-container"></div>
+        <button type="button" class="btn-add" onclick="agregarEdu()">
+          <i class="fas fa-plus"></i> Agregar título
+        </button>
+      </div>
+
+      <!-- ── REFERENCIAS PERSONALES ── -->
+      <div class="section-card">
+        <h2><i class="fas fa-users"></i> Referencias Personales</h2>
+        <div id="referencias-container"></div>
+        <button type="button" class="btn-add" onclick="agregarRef()">
+          <i class="fas fa-plus"></i> Agregar referencia
+        </button>
+      </div>
+
+      <!-- ── ACCIONES ── -->
+      <div class="action-bar">
+        <button type="submit" class="btn-guardar" id="btn-guardar">
+          <i class="fas fa-save" style="margin-right:8px"></i>Guardar
+        </button>
+        <button type="button" class="btn-pdf" onclick="exportarPDF()">
+          <i class="fas fa-file-pdf" style="margin-right:8px"></i>Exportar como PDF
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fas fa-info-circle" id="toast-icon"></i>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script type="module">
+    import { requireAuth, cargarUsuario, logout } from './js/core/auth-guard.js';
+    import { api }           from './js/core/api.js';
+    import { showToast }     from './js/components/toast.js';
+    import { exportarCVPDF } from './js/utils/cv-pdf.js';
+
+    requireAuth();
+
+    /* ── Estado (expuesto en window para que los oninput inline puedan acceder) ── */
+    window.educacion  = [{ titulo: '', institucion: '', fechaGrad: { mes: '', anio: '' }, certUrl: '', certNombre: '' }];
+    window.referencias = [
+      { nombre: '', ocupacion: '', direccion: '', telefono: '' },
+      { nombre: '', ocupacion: '', direccion: '', telefono: '' },
+    ];
+
+    /* ── Poblar selectores de día y año ── */
+    const selDia  = document.getElementById('dp-dia');
+    const selAnio = document.getElementById('dp-anio');
+    for (let d = 1; d <= 31; d++) selDia.innerHTML  += `<option value="${d}">${d}</option>`;
+    const anioActual = new Date().getFullYear();
+    for (let a = anioActual - 10; a >= anioActual - 80; a--) selAnio.innerHTML += `<option value="${a}">${a}</option>`;
+
+    /* ── Renderizar educación ── */
+    function renderEdu() {
+      document.getElementById('educacion-container').innerHTML = window.educacion.map((e, i) => `
+        <div class="edu-entry">
+          ${window.educacion.length > 1 ? `<button type="button" class="btn-remove-edu" onclick="removeEdu(${i})"><i class="fas fa-times"></i></button>` : ''}
+          <div class="form-row-2" style="margin-bottom:12px">
+            <div class="form-group" style="margin:0">
+              <label>Título obtenido</label>
+              <input type="text" placeholder="Ej: Técnico en Sistemas" value="${e.titulo}"
+                oninput="educacion[${i}].titulo = this.value"/>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Institución</label>
+              <input type="text" placeholder="Ej: SENA" value="${e.institucion}"
+                oninput="educacion[${i}].institucion = this.value"/>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:12px">
+            <label>Fecha de graduación</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <select onchange="educacion[${i}].fechaGrad.mes = this.value" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:9px;color:#fff;padding:11px 14px;font-family:'Exo 2',sans-serif;font-size:.9rem;outline:none">
+                <option value="">Mes</option>
+                ${['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+                  .map(m => `<option value="${m}" ${(e.fechaGrad?.mes === m) ? 'selected' : ''}>${m}</option>`).join('')}
+              </select>
+              <select onchange="educacion[${i}].fechaGrad.anio = this.value" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:9px;color:#fff;padding:11px 14px;font-family:'Exo 2',sans-serif;font-size:.9rem;outline:none">
+                <option value="">Año</option>
+                ${Array.from({ length: 50 }, (_, k) => new Date().getFullYear() - k)
+                  .map(a => `<option value="${a}" ${(e.fechaGrad?.anio == a) ? 'selected' : ''}>${a}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="cert-row">
+            <label class="cert-label ${e.certUrl ? 'loaded' : ''}" id="cert-label-${i}">
+              <i class="fas ${e.certUrl ? 'fa-check-circle' : 'fa-paperclip'}"></i>
+              ${e.certNombre || 'Anexar certificado (PDF / imagen, máx. 5 MB)'}
+              <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="subirCert(${i}, this)"/>
+            </label>
+            ${e.certUrl ? `<a href="${e.certUrl}" target="_blank" class="cert-link"><i class="fas fa-eye"></i> Ver</a>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ── Renderizar referencias ── */
+    function renderRefs() {
+      document.getElementById('referencias-container').innerHTML = window.referencias.map((r, i) => `
+        <div class="ref-entry">
+          ${i >= 2 ? `<button type="button" class="btn-remove-ref" onclick="removeRef(${i})"><i class="fas fa-times"></i></button>` : ''}
+          <p class="ref-num">Referencia ${i + 1}</p>
+          <div class="form-row-2" style="margin-bottom:10px">
+            <div class="form-group" style="margin:0">
+              <label>Nombre</label>
+              <input type="text" placeholder="Nombre completo" value="${r.nombre}"
+                oninput="referencias[${i}].nombre = this.value"/>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Ocupación</label>
+              <input type="text" placeholder="Ej: Docente" value="${r.ocupacion}"
+                oninput="referencias[${i}].ocupacion = this.value"/>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group" style="margin:0">
+              <label>Dirección</label>
+              <input type="text" placeholder="Dirección" value="${r.direccion}"
+                oninput="referencias[${i}].direccion = this.value"/>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Teléfono</label>
+              <input type="text" placeholder="Número de contacto" value="${r.telefono}"
+                oninput="referencias[${i}].telefono = this.value"/>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ── Cargar datos guardados ── */
+    async function init() {
+      const u = await cargarUsuario();
+      if (!u) return;
+
+      const dp = u.cv?.datosPersonales || {};
+      document.getElementById('dp-nombre').value    = dp.nombre    || u.nombre || '';
+      document.getElementById('dp-cedula').value    = dp.cedula    || '';
+      document.getElementById('dp-ciudad').value    = dp.ciudad    || u.ciudad || '';
+      document.getElementById('dp-telefono').value  = dp.telefono  || u.telefono || '';
+      document.getElementById('dp-direccion').value = dp.direccion || '';
+      if (dp.fechaNacimiento) {
+        document.getElementById('dp-dia').value  = dp.fechaNacimiento.dia  || '';
+        document.getElementById('dp-mes').value  = dp.fechaNacimiento.mes  || '';
+        document.getElementById('dp-anio').value = dp.fechaNacimiento.anio || '';
+      }
+      document.getElementById('pl-perfil').value = u.cv?.perfilLaboral || u.perfil || '';
+
+      if (u.cv?.educacion?.length)
+        window.educacion = u.cv.educacion.map(e => ({
+          ...e,
+          fechaGrad: e.fechaGrad || { mes: '', anio: '' },
+        }));
+      if (u.cv?.referencias?.length) window.referencias = u.cv.referencias;
+
+      renderEdu();
+      renderRefs();
+    }
+
+    /* ── Subir certificado ── */
+    async function subirCert(idx, input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const label = document.getElementById(`cert-label-${idx}`);
+      label.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo...`;
+
+      try {
+        const fd = new FormData();
+        fd.append('certificado', file);
+        const data = await api.upload('/usuarios/certificado', fd);
+        window.educacion[idx].certUrl    = data.url;
+        window.educacion[idx].certNombre = data.nombre;
+        renderEdu();
+        showToast('Certificado subido correctamente', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+        renderEdu();
+      }
+    }
+
+    /* ── Agregar / eliminar educación ── */
+    function agregarEdu() {
+      window.educacion.push({ titulo: '', institucion: '', fechaGrad: { mes: '', anio: '' }, certUrl: '', certNombre: '' });
+      renderEdu();
+    }
+    function removeEdu(i) {
+      window.educacion.splice(i, 1);
+      renderEdu();
+    }
+
+    /* ── Agregar / eliminar referencias ── */
+    function agregarRef() {
+      window.referencias.push({ nombre: '', ocupacion: '', direccion: '', telefono: '' });
+      renderRefs();
+    }
+    function removeRef(i) {
+      window.referencias.splice(i, 1);
+      renderRefs();
+    }
+
+    /* ── Guardar ── */
+    document.getElementById('form-hv').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('dp-nombre').value.trim();
+      if (!nombre) { showToast('El nombre completo es requerido', 'error'); return; }
+
+      const cv = {
+        datosPersonales: {
+          nombre,
+          cedula:    document.getElementById('dp-cedula').value.trim(),
+          ciudad:    document.getElementById('dp-ciudad').value.trim(),
+          telefono:  document.getElementById('dp-telefono').value.trim(),
+          direccion: document.getElementById('dp-direccion').value.trim(),
+          fechaNacimiento: {
+            dia:  document.getElementById('dp-dia').value,
+            mes:  document.getElementById('dp-mes').value,
+            anio: document.getElementById('dp-anio').value,
+          },
+        },
+        perfilLaboral: document.getElementById('pl-perfil').value.trim(),
+        educacion:   window.educacion.filter(e => e.titulo || e.institucion),
+        referencias: window.referencias.filter(r => r.nombre),
+      };
+
+      const btn = document.getElementById('btn-guardar');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px"></i>Guardando...';
+
+      try {
+        await api.put('/usuarios/cv', { cv });
+        showToast('Hoja de vida guardada correctamente', 'success');
+        setTimeout(() => { window.location.href = 'dashboard-persona.html'; }, 1500);
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save" style="margin-right:8px"></i>Guardar';
+      }
+    });
+
+    /* ── Exportar PDF (formato Harvard) ── */
+    function exportarPDF() {
+      exportarCVPDF({
+        datosPersonales: {
+          nombre:    document.getElementById('dp-nombre').value.trim(),
+          cedula:    document.getElementById('dp-cedula').value.trim(),
+          ciudad:    document.getElementById('dp-ciudad').value.trim(),
+          telefono:  document.getElementById('dp-telefono').value.trim(),
+          direccion: document.getElementById('dp-direccion').value.trim(),
+          fechaNacimiento: {
+            dia:  document.getElementById('dp-dia').value,
+            mes:  document.getElementById('dp-mes').value,
+            anio: document.getElementById('dp-anio').value,
+          },
+        },
+        perfilLaboral: document.getElementById('pl-perfil').value.trim(),
+        educacion:   window.educacion,
+        referencias: window.referencias,
+      });
+    }
+
+    /* ── Exponer globales ── */
+    window.logout      = logout;
+    window.agregarEdu  = agregarEdu;
+    window.removeEdu   = removeEdu;
+    window.subirCert   = subirCert;
+    window.agregarRef  = agregarRef;
+    window.removeRef   = removeRef;
+    window.exportarPDF = exportarPDF;
+
+    init();
+  </script>
+</body>
+</html>

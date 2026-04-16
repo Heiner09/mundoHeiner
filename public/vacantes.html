@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Equidad – Vacantes Disponibles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+  <style>
+    body { background: var(--navy); min-height: 100vh; }
+
+    .page-header {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      padding: 40px 24px; text-align: center;
+    }
+    .page-header h1 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; color: #fff; margin: 0 0 6px; }
+    .page-header p  { color: rgba(255,255,255,.75); margin: 0; font-size: .95rem; }
+
+    .vacantes-container { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,.6); font-size: .9rem; text-decoration: none;
+      margin-bottom: 28px; transition: color .2s;
+    }
+    .back-link:hover { color: var(--cyan); }
+
+    /* Filtros */
+    .filtros { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+    .filtro-btn {
+      padding: 7px 18px; border-radius: 20px; border: 1px solid rgba(255,255,255,.2);
+      background: transparent; color: rgba(255,255,255,.6); font-size: .85rem;
+      cursor: pointer; transition: all .2s; font-family: 'Exo 2', sans-serif;
+    }
+    .filtro-btn:hover, .filtro-btn.active {
+      background: rgba(0,200,212,.15); border-color: var(--cyan); color: var(--cyan);
+    }
+
+    /* Grid */
+    .empleos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+
+    .empleo-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: 24px; display: flex; flex-direction: column;
+      transition: transform .2s, border-color .2s;
+    }
+    .empleo-card:hover { transform: translateY(-3px); border-color: var(--cyan); }
+
+    .empleo-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+    .empleo-titulo { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; color: #fff; margin: 0; flex: 1; }
+    .empleo-badge {
+      font-size: .72rem; font-weight: 600; letter-spacing: .5px;
+      padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+      background: rgba(0,200,212,.15); color: var(--cyan); border: 1px solid var(--cyan);
+    }
+    .empleo-meta { font-size: .85rem; color: rgba(255,255,255,.6); margin: 0 0 6px; display: flex; align-items: center; gap: 6px; }
+    .empleo-meta i { color: var(--cyan); width: 14px; }
+    .empleo-desc {
+      font-size: .88rem; color: rgba(255,255,255,.5); margin: 12px 0 16px; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .btn-postular {
+      width: 100%; padding: 10px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #fff; border: none; border-radius: 8px;
+      font-family: 'Rajdhani', sans-serif; font-size: .95rem; font-weight: 600;
+      letter-spacing: .5px; cursor: pointer; transition: opacity .2s;
+    }
+    .btn-postular:hover    { opacity: .85; }
+    .btn-postular:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-postulado {
+      width: 100%; padding: 10px;
+      background: rgba(0,200,100,.1); border: 1px solid #00c864; color: #00c864;
+      border-radius: 8px; font-family: 'Rajdhani', sans-serif; font-size: .95rem; font-weight: 600;
+      cursor: default;
+    }
+
+    .loading-text, .empty-text { color: rgba(255,255,255,.4); font-size: .9rem; padding: 40px 0; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
+    <ul class="nav-links">
+      <li><button class="btn-nav" onclick="logout()" style="cursor:pointer;border:none;background:transparent;padding:0">
+        <i class="fas fa-sign-out-alt"></i> Salir
+      </button></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1><i class="fas fa-briefcase" style="margin-right:10px"></i>Vacantes Disponibles</h1>
+    <p>Encuentra la oportunidad laboral que se adapta a ti</p>
+  </div>
+
+  <div class="vacantes-container">
+    <a href="dashboard-persona.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Volver al dashboard
+    </a>
+
+    <div class="filtros">
+      <button class="filtro-btn active" onclick="filtrar('todos', this)">Todos</button>
+      <button class="filtro-btn" onclick="filtrar('presencial', this)">Presencial</button>
+      <button class="filtro-btn" onclick="filtrar('remoto', this)">Remoto</button>
+      <button class="filtro-btn" onclick="filtrar('hibrido', this)">Híbrido</button>
+    </div>
+
+    <div class="empleos-grid" id="empleos-grid">
+      <p class="loading-text">Cargando vacantes...</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-info-circle" id="toast-icon"></i>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script type="module">
+    import { requireAuth, logout } from './js/core/auth-guard.js';
+    import { api }       from './js/core/api.js';
+    import { showToast } from './js/components/toast.js';
+
+    requireAuth();
+
+    const MODALIDAD = { presencial: 'Presencial', remoto: 'Remoto', hibrido: 'Híbrido' };
+
+    let todosEmpleos    = [];
+    let misPostulaciones = new Set();
+    let filtroActivo    = 'todos';
+
+    async function init() {
+      try {
+        const [dataEmpleos, dataPost] = await Promise.all([
+          api.get('/empleos'),
+          api.get('/postulaciones/mis-postulaciones'),
+        ]);
+        todosEmpleos = dataEmpleos.empleos;
+        dataPost.postulaciones.forEach(p => misPostulaciones.add(p.empleo._id || p.empleo));
+        renderEmpleos(filtroActivo);
+      } catch (err) {
+        document.getElementById('empleos-grid').innerHTML = '<p class="empty-text">Error al cargar las vacantes.</p>';
+        showToast(err.message, 'error');
+      }
+    }
+
+    function renderEmpleos(filtro) {
+      const grid  = document.getElementById('empleos-grid');
+      const lista = filtro === 'todos' ? todosEmpleos : todosEmpleos.filter(e => e.modalidad === filtro);
+
+      if (!lista.length) {
+        grid.innerHTML = '<p class="empty-text">No hay vacantes disponibles para este filtro.</p>';
+        return;
+      }
+
+      grid.innerHTML = lista.map(e => {
+        const yaPostulado = misPostulaciones.has(e._id);
+        return `
+          <div class="empleo-card">
+            <div class="empleo-header">
+              <h3 class="empleo-titulo">${e.titulo}</h3>
+              <span class="empleo-badge">${MODALIDAD[e.modalidad] || e.modalidad}</span>
+            </div>
+            <p class="empleo-meta"><i class="fas fa-building"></i> ${e.empresa?.nombre || 'Empresa'}</p>
+            <p class="empleo-meta"><i class="fas fa-map-marker-alt"></i> ${e.ubicacion}</p>
+            <p class="empleo-meta"><i class="fas fa-coins"></i> ${e.salario}</p>
+            <p class="empleo-desc">${e.descripcion}</p>
+            ${yaPostulado
+              ? `<button class="btn-postulado" disabled><i class="fas fa-check" style="margin-right:6px"></i>Postulación enviada</button>`
+              : `<button class="btn-postular" id="btn-${e._id}" onclick="postular('${e._id}')">Postular</button>`
+            }
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function postular(empleoId) {
+      const btn = document.getElementById(`btn-${empleoId}`);
+      btn.disabled = true; btn.textContent = 'Enviando...';
+      try {
+        const data = await api.post('/postulaciones', { empleoId });
+        showToast(data.mensaje, 'success');
+        misPostulaciones.add(empleoId);
+        renderEmpleos(filtroActivo);
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.disabled = false; btn.textContent = 'Postular';
+      }
+    }
+
+    window.filtrar = (filtro, btn) => {
+      filtroActivo = filtro;
+      document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderEmpleos(filtro);
+    };
+
+    window.postular = postular;
+    window.logout   = logout;
+
+    init();
+  </script>
+</body>
+</html>
