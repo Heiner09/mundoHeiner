@@ -1130,6 +1130,12 @@ footer {
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 }
 
+/* ===== FIXED NAVBAR OFFSET =====
+   El nav es position:fixed (64px). Sin compensación, tapa la parte
+   superior de los banners. Estas reglas empujan el contenido hacia abajo. */
+.page-header { padding-top: 104px !important; } /* 40px original + 64px nav */
+.dash-hero   { padding-top: 116px !important; } /* 52px original + 64px nav */
+
 /* ===== ANIMATIONS ===== */
 .reveal {
   opacity: 0;
