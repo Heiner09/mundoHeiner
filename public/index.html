@@ -17,12 +17,24 @@
 
   
     <a href="index.html" class="nav-logo">MUNDO <span>EQUIDAD</span></a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
       <li><a href="#">Crea tu hoja de vida</a></li>
       <li><a href="#">Consigue empleo</a></li>
-      <li><a href="login.html" class="btn-nav">Inicio sesión</a></li>
+      <li><a href="login.html" class="btn-nav" id="nav-auth-btn">Inicio sesión</a></li>
     </ul>
   </nav>
+
+  <script>
+    (function () {
+      const token   = localStorage.getItem('token');
+      const usuario = token ? JSON.parse(localStorage.getItem('usuario') || 'null') : null;
+      if (token && usuario) {
+        const btn = document.getElementById('nav-auth-btn');
+        btn.textContent = 'Mi Dashboard';
+        btn.href = usuario.tipo === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-persona.html';
+      }
+    })();
+  </script>
 <main class="home-page">
   <!-- ===== HERO CAROUSEL ===== -->
   <section class="hero" id="inicio">
